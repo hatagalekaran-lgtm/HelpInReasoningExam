@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Learning Game</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
+    text-align:center;
+}
+
+.back-btn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    background:black;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    display:none;
+}
+
+#startPage{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:20px 35px;
+    border:none;
+    border-radius:15px;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.prime-btn{ background:#007bff; }
+.math-btn{ background:#ff9800; }
+.square-btn{ background:#9c27b0; }
+.cube-btn{ background:#009688; }
+.alpha-btn{ background:#e91e63; }
+
+/* PRIME */
+
+#primePage{
+    display:none;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(10,70px);
+    gap:10px;
+    justify-content:center;
+}
+
+.box{
+    width:70px;
+    height:70px;
+    background:white;
+    border:2px solid #ccc;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.prime{
+    background:green;
+    color:white;
+}
+
+.wrong{
+    background:red;
+    color:white;
+}
+
+/* SPEED MATH */
+
+#mathPage{
+    display:none;
+    padding-top:30px;
+}
+
+.symbol-container{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.symbol-btn{
+    width:70px;
+    height:70px;
+    border:none;
+    border-radius:15px;
+    font-size:35px;
+    cursor:pointer;
+}
+
+.selected{
+    background:green;
+    color:white;
+}
+
+#mathQuestion{
+    font-size:55px;
+    font-weight:bold;
+    margin-top:30px;
+}
+
+#answerInput{
+    width:220px;
+    padding:15px;
+    font-size:30px;
+    text-align:center;
+    margin-top:20px;
+}
+
+#quizPage{
+    display:none;
+    padding-top:40px;
+}
+
+.mode-buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.mode-buttons button{
+    padding:15px 25px;
+    border:none;
+    border-radius:15px;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+#question{
+    font-size:60px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,150px);
+    gap:20px;
+    justify-content:center;
+}
+
+.option-btn{
+    padding:25px;
+    border:none;
+    border-radius:15px;
+    background:white;
+    font-size:28px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.correct{
+    background:green !important;
+    color:white;
+}
+
+.incorrect{
+    background:red !important;
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<button class="back-btn"
+    id="backBtn"
+    onclick="goBack()">
+    BACK
+</button>
+
+<!-- HOME -->
+
+<div id="startPage">
+
+    <button class="btn prime-btn"
+        onclick="openPrimeGame()">
+        PRIME GAME
+    </button>
+
+    <button class="btn math-btn"
+        onclick="openMathGame()">
+        SPEED MATH
+    </button>
+
+    <button class="btn square-btn"
+        onclick="openSquareMenu()">
+        SQUARE
+    </button>
+
+    <button class="btn cube-btn"
+        onclick="openCubeMenu()">
+        CUBE
+    </button>
+
+    <button class="btn alpha-btn"
+        onclick="openAlphabetMenu()">
+        ALPHABETS
+    </button>
+
+</div>
+
+<!-- PRIME -->
+
+<div id="primePage">
+
+    <h1>Find Prime Numbers</h1>
+
+    <div class="grid"
+        id="primeGrid"></div>
+
+</div>
+
+<!-- SPEED MATH -->
+
+<div id="mathPage">
+
+    <h1>Speed Math</h1>
+
+    <div class="symbol-container">
+
+        <button class="symbol-btn"
+            onclick="toggleOperation('+', this)">
+            +
+        </button>
+
+        <button class="symbol-btn"
+            onclick="toggleOperation('-', this)">
+            -
+        </button>
+
+        <button class="symbol-btn"
+            onclick="toggleOperation('*', this)">
+            ×
+        </button>
+
+        <button class="symbol-btn"
+            onclick="toggleOperation('/', this)">
+            ÷
+        </button>
+
+    </div>
+
+    <h2>Range</h2>
+
+    <input type="text"
+        id="minRange"
+        value="0">
+
+    <span>to</span>
+
+    <input type="text"
+        id="maxRange"
+        value="100">
+
+    <h2>Time</h2>
+
+    <select id="timeSelect">
+
+        <option value="60">
+            1 Minute
+        </option>
+
+        <option value="120">
+            2 Minutes
+        </option>
+
+        <option value="180">
+            3 Minutes
+        </option>
+
+        <option value="300">
+            5 Minutes
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button class="btn math-btn"
+        onclick="startMathGame()">
+        START
+    </button>
+
+    <div id="mathQuiz"
+        style="display:none;">
+
+        <div id="timer">60</div>
+
+        <div id="liveScore">
+            Correct : 0 | Wrong : 0
+        </div>
+
+        <div id="mathQuestion">
+            5 + 5
+        </div>
+
+        <input type="text"
+            id="answerInput">
+
+    </div>
+
+</div>
+
+<!-- COMMON QUIZ PAGE -->
+
+<div id="quizPage">
+
+    <div class="mode-buttons"
+        id="modeButtons"></div>
+
+    <div id="question">
+        A
+    </div>
+
+    <div class="options"
+        id="optionsBox"></div>
+
+</div>
+
+<script>
+
+/* ELEMENTS */
+
+const startPage =
+    document.getElementById("startPage");
+
+const primePage =
+    document.getElementById("primePage");
+
+const mathPage =
+    document.getElementById("mathPage");
+
+const quizPage =
+    document.getElementById("quizPage");
+
+const backBtn =
+    document.getElementById("backBtn");
+
+const modeButtons =
+    document.getElementById("modeButtons");
+
+const question =
+    document.getElementById("question");
+
+const optionsBox =
+    document.getElementById("optionsBox");
+
+/* VARIABLES */
+
+let currentMode = "";
+let currentCorrectAnswer = 0;
+
+/* HIDE ALL */
+
+function hideAll(){
+
+    startPage.style.display = "none";
+
+    primePage.style.display = "none";
+
+    mathPage.style.display = "none";
+
+    quizPage.style.display = "none";
+
+}
+
+/* BACK */
+
+function goBack(){
+
+    location.reload();
+
+}
+
+/* PRIME GAME */
+
+function isPrime(num){
+
+    if(num < 2){
+        return false;
+    }
+
+    for(let i = 2; i <= Math.sqrt(num); i++){
+
+        if(num % i === 0){
+            return false;
+        }
+
+    }
+
+    return true;
+
+}
+
+function openPrimeGame(){
+
+    hideAll();
+
+    primePage.style.display = "block";
+
+    backBtn.style.display = "block";
+
+    const grid =
+        document.getElementById("primeGrid");
+
+    grid.innerHTML = "";
+
+    let numbers = [];
+
+    for(let i = 1; i <= 100; i++){
+
+        numbers.push(i);
+
+    }
+
+    numbers.sort(() => Math.random() - 0.5);
+
+    numbers.forEach(number => {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "box";
+
+        box.innerText = number;
+
+        box.onclick = function(){
+
+            if(isPrime(number)){
+
+                box.classList.add("prime");
+
+            }
+            else{
+
+                box.classList.add("wrong");
+
+            }
+
+        };
+
+        grid.appendChild(box);
+
+    });
+
+}
+
+/* SPEED MATH */
+
+let selectedOperations = [];
+let mathAnswer = 0;
+let score = 0;
+let wrong = 0;
+let timer;
+let timeLeft = 60;
+
+function openMathGame(){
+
+    hideAll();
+
+    mathPage.style.display = "block";
+
+    backBtn.style.display = "block";
+
+}
+
+function toggleOperation(operation, button){
+
+    if(selectedOperations.includes(operation)){
+
+        selectedOperations =
+            selectedOperations.filter(
+                op => op !== operation
+            );
+
+        button.classList.remove("selected");
+
+    }
+    else{
+
+        selectedOperations.push(operation);
+
+        button.classList.add("selected");
+
+    }
+
+}
+
+function startMathGame(){
+
+    if(selectedOperations.length === 0){
+
+        alert("Select operation");
+
+        return;
+
+    }
+
+    document.getElementById("mathQuiz")
+        .style.display = "block";
+
+    timeLeft =
+        Number(
+            document.getElementById("timeSelect").value
+        );
+
+    generateMathQuestion();
+
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        document.getElementById("timer")
+            .innerText = timeLeft;
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            alert(
+                "Game Over\nCorrect : "
+                + score +
+                "\nWrong : "
+                + wrong
+            );
+
+        }
+
+    }, 1000);
+
+}
+
+function generateMathQuestion(){
+
+    let min =
+        Number(
+            document.getElementById("minRange").value
+        );
+
+    let max =
+        Number(
+            document.getElementById("maxRange").value
+        );
+
+    let a =
+        Math.floor(Math.random() * (max - min + 1))
+        + min;
+
+    let b =
+        Math.floor(Math.random() * (max - min + 1))
+        + min;
+
+    let randomOperation =
+        selectedOperations[
+            Math.floor(
+                Math.random()
+                * selectedOperations.length
+            )
+        ];
+
+    if(randomOperation === "+"){
+
+        mathAnswer = a + b;
+
+    }
+
+    else if(randomOperation === "-"){
+
+        mathAnswer = a - b;
+
+    }
+
+    else if(randomOperation === "*"){
+
+        mathAnswer = a * b;
+
+    }
+
+    else{
+
+        if(b === 0){
+            b = 1;
+        }
+
+        mathAnswer = a;
+
+        a = a * b;
+
+    }
+
+    document.getElementById("mathQuestion")
+        .innerText =
+        a + " " + randomOperation + " " + b;
+
+    document.getElementById("answerInput")
+        .value = "";
+
+}
+
+document.getElementById("answerInput")
+.addEventListener("input", function(){
+
+    let value =
+        Number(this.value);
+
+    if(value === mathAnswer){
+
+        score++;
+
+        updateScore();
+
+        generateMathQuestion();
+
+    }
+
+});
+
+function updateScore(){
+
+    document.getElementById("liveScore")
+        .innerText =
+        "Correct : "
+        + score +
+        " | Wrong : "
+        + wrong;
+
+}
+
+/* SQUARE MENU */
+
+function openSquareMenu(){
+
+    hideAll();
+
+    quizPage.style.display = "block";
+
+    backBtn.style.display = "block";
+
+    modeButtons.innerHTML = `
+
+        <button style="background:#9c27b0"
+            onclick="squareGame()">
+            Square
+        </button>
+
+        <button style="background:#9c27b0"
+            onclick="squareRootGame()">
+            Square Root
+        </button>
+
+    `;
+
+}
+
+/* CUBE MENU */
+
+function openCubeMenu(){
+
+    hideAll();
+
+    quizPage.style.display = "block";
+
+    backBtn.style.display = "block";
+
+    modeButtons.innerHTML = `
+
+        <button style="background:#009688"
+            onclick="cubeGame()">
+            Cube
+        </button>
+
+        <button style="background:#009688"
+            onclick="cubeRootGame()">
+            Cube Root
+        </button>
+
+    `;
+
+}
+
+/* ALPHABET MENU */
+
+function openAlphabetMenu(){
+
+    hideAll();
+
+    quizPage.style.display = "block";
+
+    backBtn.style.display = "block";
+
+    modeButtons.innerHTML = `
+
+        <button style="background:#e91e63"
+            onclick="letterNoGame()">
+            Letter No
+        </button>
+
+        <button style="background:#e91e63"
+            onclick="oppositeGame()">
+            Opposite
+        </button>
+
+    `;
+
+}
+
+/* SQUARE */
+
+function squareGame(){
+
+    currentMode = "square";
+
+    let num =
+        Math.floor(Math.random() * 30) + 1;
+
+    currentCorrectAnswer =
+        num * num;
+
+    question.innerText =
+        num + "²";
+
+    createNumberOptions(currentCorrectAnswer);
+
+}
+
+/* SQUARE ROOT */
+
+function squareRootGame(){
+
+    currentMode = "squareRoot";
+
+    let num =
+        Math.floor(Math.random() * 30) + 1;
+
+    currentCorrectAnswer = num;
+
+    question.innerText =
+        "√" + (num * num);
+
+    createNumberOptions(currentCorrectAnswer);
+
+}
+
+/* CUBE */
+
+function cubeGame(){
+
+    currentMode = "cube";
+
+    let num =
+        Math.floor(Math.random() * 20) + 1;
+
+    currentCorrectAnswer =
+        num * num * num;
+
+    question.innerText =
+        num + "³";
+
+    createNumberOptions(currentCorrectAnswer);
+
+}
+
+/* CUBE ROOT */
+
+function cubeRootGame(){
+
+    currentMode = "cubeRoot";
+
+    let num =
+        Math.floor(Math.random() * 20) + 1;
+
+    currentCorrectAnswer = num;
+
+    question.innerText =
+        "∛" + (num * num * num);
+
+    createNumberOptions(currentCorrectAnswer);
+
+}
+
+/* LETTER NUMBER */
+
+function letterNoGame(){
+
+    currentMode = "letterNo";
+
+    const letters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let index =
+        Math.floor(Math.random() * 26);
+
+    let letter =
+        letters[index];
+
+    currentCorrectAnswer =
+        index + 1;
+
+    question.innerText =
+        letter;
+
+    createNumberOptions(currentCorrectAnswer);
+
+}
+
+/* OPPOSITE */
+
+function oppositeGame(){
+
+    currentMode = "opposite";
+
+    const letters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let index =
+        Math.floor(Math.random() * 26);
+
+    let letter =
+        letters[index];
+
+    let opposite =
+        letters[25 - index];
+
+    currentCorrectAnswer =
+        opposite;
+
+    question.innerText =
+        letter;
+
+    createLetterOptions(currentCorrectAnswer);
+
+}
+
+/* NUMBER OPTIONS */
+
+function createNumberOptions(correct){
+
+    optionsBox.innerHTML = "";
+
+    let options = [correct];
+
+    while(options.length < 4){
+
+        let random =
+            correct +
+            Math.floor(Math.random() * 15) - 7;
+
+        if(
+            random > 0 &&
+            !options.includes(random)
+        ){
+
+            options.push(random);
+
+        }
+
+    }
+
+    options.sort(() => Math.random() - 0.5);
+
+    options.forEach(option => {
+
+        createButton(option);
+
+    });
+
+}
+
+/* LETTER OPTIONS */
+
+function createLetterOptions(correct){
+
+    optionsBox.innerHTML = "";
+
+    const letters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let options = [correct];
+
+    while(options.length < 4){
+
+        let random =
+            letters[
+                Math.floor(Math.random() * 26)
+            ];
+
+        if(!options.includes(random)){
+
+            options.push(random);
+
+        }
+
+    }
+
+    options.sort(() => Math.random() - 0.5);
+
+    options.forEach(option => {
+
+        createButton(option);
+
+    });
+
+}
+
+/* CREATE BUTTON */
+
+function createButton(option){
+
+    const btn =
+        document.createElement("button");
+
+    btn.className =
+        "option-btn";
+
+    btn.innerText =
+        option;
+
+    btn.onclick = function(){
+
+        checkAnswer(btn, option);
+
+    };
+
+    optionsBox.appendChild(btn);
+
+}
+
+/* CHECK ANSWER */
+
+function checkAnswer(button, answer){
+
+    const buttons =
+        document.querySelectorAll(".option-btn");
+
+    buttons.forEach(btn => {
+
+        btn.disabled = true;
+
+        if(
+            btn.innerText ==
+            currentCorrectAnswer
+        ){
+
+            btn.classList.add("correct");
+
+        }
+
+    });
+
+    if(answer != currentCorrectAnswer){
+
+        button.classList.add("incorrect");
+
+    }
+
+    setTimeout(() => {
+
+        if(currentMode === "square"){
+
+            squareGame();
+
+        }
+
+        else if(currentMode === "squareRoot"){
+
+            squareRootGame();
+
+        }
+
+        else if(currentMode === "cube"){
+
+            cubeGame();
+
+        }
+
+        else if(currentMode === "cubeRoot"){
+
+            cubeRootGame();
+
+        }
+
+        else if(currentMode === "letterNo"){
+
+            letterNoGame();
+
+        }
+
+        else if(currentMode === "opposite"){
+
+            oppositeGame();
+
+        }
+
+    }, 800);
+
+}
+
+</script>
+
+</body>
+</html>
